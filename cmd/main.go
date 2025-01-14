@@ -1,34 +1,27 @@
 package main
 
 import (
-	"fmt"
-	"io"
 	"log"
+	internal "my-go-project/internal/handlers"
 	"net/http"
+	"os"
 )
 
-// creating a simple HTTP server
+// creating a simple HTTP server: decomposing the code into smaller parts with handlers and logging
 func main() {
-	// HandleFunc takes function, creates HTTP handler and adds it to the DefaultServeMux
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		log.Println("Request received")
-	})
 
-	http.HandleFunc("/another", func(w http.ResponseWriter, r *http.Request) {
-		log.Println("Another Request received")
-	})
+	// creating a logger for the data handler
+	l := log.New(os.Stdout, "product-api", log.LstdFlags)
 
-	http.HandleFunc("/data", func(w http.ResponseWriter, r *http.Request) {
-		data, error := io.ReadAll(r.Body)
-		if error != nil {
-			http.Error(w, "Error reading data", http.StatusBadRequest)
-			return
-		}
+	indexHandler := internal.NewIndex(l)
+	dataHandler := internal.NewData(l)
 
-		fmt.Fprintf(w, "User, Your input was: %s\n", string(data))
-		log.Println("Data received: ", string(data))
-	})
+	// ServeMux is an HTTP request multiplexer
+	sm := http.NewServeMux()
+	sm.Handle("/", indexHandler)
+	sm.Handle("/data", dataHandler)
 
 	// ListenAndServe uses the DefaultServeMux to handle requests
-	http.ListenAndServe(":8080", nil)
+	// now we are using our own ServeMux with indexHandler and dataHandler registered
+	http.ListenAndServe(":8080", sm)
 }
