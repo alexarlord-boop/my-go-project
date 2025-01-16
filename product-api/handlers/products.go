@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"encoding/json"
 	"log"
 	"my-go-project/product-api/data"
 	"net/http"
@@ -15,12 +14,12 @@ func NewProducts(l *log.Logger) *Products {
 	return &Products{l}
 }
 
+// modification with ToJSON method -- simplies the code, making it a bit faster.
 func (p *Products) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	productList := data.GetProducts()
-	encodedData, err := json.Marshal(productList)
+	err := productList.ToJSON(w)
 	if err != nil {
-		http.Error(w, "Unable to marshal json", http.StatusInternalServerError)
+		http.Error(w, "Server is unable to return json", http.StatusInternalServerError)
 	}
 
-	w.Write(encodedData)
 }
