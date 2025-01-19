@@ -85,7 +85,7 @@ func (p *Products) addProduct(w http.ResponseWriter, r *http.Request) {
 }
 
 func (p *Products) updateProduct(id int, w http.ResponseWriter, r *http.Request) {
-	p.l.Println("Handle PUT Products")
+	p.l.Println("Handle PUT Product")
 
 	// create a new struct to hold the data and get the pointer to it
 	product := &data.Product{}
@@ -95,5 +95,14 @@ func (p *Products) updateProduct(id int, w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	data.UpdateProduct(id, product)
+	err = data.UpdateProduct(id, product)
+	if err == data.ErrProductNotFound {
+		http.Error(w, "Product not found", http.StatusNotFound)
+		return
+	}
+
+	if err != nil {
+		http.Error(w, "Product not found", http.StatusInternalServerError)
+		return
+	}
 }
