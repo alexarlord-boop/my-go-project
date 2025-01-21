@@ -7,7 +7,7 @@ This project is exploring how to build Microservices using the Go programming la
 ## My Learning Path Structure
 ✴️ -- in progress, ❇️ -- completed
 * ❇️ Introduction to microservices
-* ✴️ RESTFul microservices
+* ✴️ RESTFul microservices [Gorilla Web Toolkit](https://gorilla.github.io/), [Go Validator](https://pkg.go.dev/github.com/go-playground/validator/v10#section-readme)
 * gRPC microservices
 * Packaging applications with Docker
 * Testing microservice
