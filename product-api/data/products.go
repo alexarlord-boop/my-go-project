@@ -11,15 +11,52 @@ import (
 )
 
 // structure for an API product with json tags
+// swagger:model
 type Product struct {
-	ID          int       `json:"id"`
-	Name        string    `json:"name" validate:"required"`
-	Description string    `json:"description"`
-	Price       float32   `json:"price" validate:"gt=0"`
-	SKU         string    `json:"sku" validate:"required,sku"`
-	CreatedOn   time.Time `json:"-"`
-	UpdatedOn   time.Time `json:"-"`
-	DeletedOn   time.Time `json:"-"`
+	// id for the product
+	//
+	// required: true
+	// min: 1
+	ID int `json:"id"`
+
+	// name for the product
+	//
+	// required: true
+	// max length: 255
+	Name string `json:"name" validate:"required"`
+
+	// description for the product
+	//
+	// required: false
+	// max length: 1000
+	Description string `json:"description"`
+
+	// price for the product
+	//
+	// required: true
+	// min: 0
+	Price float32 `json:"price" validate:"gt=0"`
+
+	// sku (stock keeping unit) for the product
+	//
+	// required: true
+	// pattern: [a-z]+-[a-z]+-[a-z]+
+	SKU string `json:"sku" validate:"required,sku"`
+
+	// when the product was created
+	//
+	// required: false
+	CreatedOn time.Time `json:"-"`
+
+	// when the product was last updated
+	//
+	// required: false
+	UpdatedOn time.Time `json:"-"`
+
+	// when the product was deleted
+	//
+	// required: false
+	DeletedOn time.Time `json:"-"`
 }
 
 func (p *Product) Validate() error {
@@ -68,6 +105,16 @@ func UpdateProduct(id int, p *Product) error {
 
 	p.ID = id
 	productList[pos] = p
+	return nil
+}
+
+func DeleteProduct(id int) error {
+	_, pos, err := findProduct(id)
+	if err != nil {
+		return err
+	}
+
+	productList = append(productList[:pos], productList[pos+1:]...)
 	return nil
 }
 
