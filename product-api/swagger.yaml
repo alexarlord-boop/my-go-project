@@ -87,6 +87,14 @@ paths:
         get:
             description: Returns a single product by ID
             operationId: listSingleProduct
+            parameters:
+                - description: The id of the product to delete from the data store
+                  format: int64
+                  in: path
+                  name: id
+                  required: true
+                  type: integer
+                  x-go-name: ID
             responses:
                 "200":
                     $ref: '#/responses/productResponse'
@@ -123,6 +131,8 @@ responses:
                     type: string
                     x-go-name: Message
             type: object
+    noContent:
+        description: No content is returned by this API endpoint
     productResponse:
         description: Data structure representing a single product
         schema:

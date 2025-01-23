@@ -56,7 +56,13 @@ type errorResponse struct {
 	}
 }
 
-// swagger:parameters deleteProduct updateProduct
+// No content is returned by this API endpoint
+// swagger:response noContent
+type noContent struct {
+	// No content
+}
+
+// swagger:parameters deleteProduct updateProduct listSingleProduct
 type productIDParameterWrapper struct {
 	// The id of the product to delete from the data store
 	// in:path

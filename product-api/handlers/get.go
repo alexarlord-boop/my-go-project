@@ -16,6 +16,9 @@ import (
 // GetProducts returns the products from the data store
 func (p *Products) GetList(w http.ResponseWriter, r *http.Request) {
 	p.l.Println("Handle GET Products")
+
+	w.Header().Add("Content-Type", "application/json")
+
 	productList := data.GetProducts()
 	err := productList.ToJSON(w)
 	if err != nil {
@@ -36,6 +39,8 @@ func (p *Products) GetDetails(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid product ID", http.StatusBadRequest)
 		return
 	}
+
+	w.Header().Add("Content-Type", "application/json")
 
 	p.l.Println("Handle GET Product", id)
 
