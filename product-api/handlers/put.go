@@ -15,7 +15,7 @@ import (
 //	204: noContent
 //	422: validationErrorResponse
 //	501: errorResponse
-func (p *Products) UpdateProduct(w http.ResponseWriter, r *http.Request) {
+func (p *Products) Update(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
 	p.l.Println("Handle PUT Product", id)

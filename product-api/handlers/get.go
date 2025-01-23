@@ -14,7 +14,7 @@ import (
 //  200: productsResponse
 
 // GetProducts returns the products from the data store
-func (p *Products) GetProducts(w http.ResponseWriter, r *http.Request) {
+func (p *Products) GetList(w http.ResponseWriter, r *http.Request) {
 	p.l.Println("Handle GET Products")
 	productList := data.GetProducts()
 	err := productList.ToJSON(w)
@@ -29,7 +29,7 @@ func (p *Products) GetProducts(w http.ResponseWriter, r *http.Request) {
 //  200: productResponse
 
 // GetProduct handles GET requests and returns a single product by ID
-func (p *Products) GetProduct(w http.ResponseWriter, r *http.Request) {
+func (p *Products) GetDetails(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {

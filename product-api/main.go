@@ -24,25 +24,28 @@ func main() {
 	// sm.Handle("/products", productHandler)
 
 	// create a new subrouter for each method with gorilla mux
-	getRouter := sm.Methods(http.MethodGet).Subrouter()
-	getRouter.HandleFunc("/products", productHandler.GetProducts)
-	getRouter.HandleFunc("/products/{id:[0-9]+}", productHandler.GetProduct)
+	getR := sm.Methods(http.MethodGet).Subrouter()
+	getR.HandleFunc("/products", productHandler.GetList)
+	getR.HandleFunc("/products/{id:[0-9]+}", productHandler.GetDetails)
 
-	putRouter := sm.Methods(http.MethodPut).Subrouter()
-	putRouter.HandleFunc("/products/{id:[0-9]+}", productHandler.UpdateProduct)
-	putRouter.Use(productHandler.MiddlewareProductValidation)
+	putR := sm.Methods(http.MethodPut).Subrouter()
+	putR.HandleFunc("/products/{id:[0-9]+}", productHandler.Update)
+	putR.Use(productHandler.MiddlewareValidateProduct)
 
-	postRouter := sm.Methods(http.MethodPost).Subrouter()
-	postRouter.HandleFunc("/products", productHandler.AddProduct)
-	postRouter.Use(productHandler.MiddlewareProductValidation)
+	postR := sm.Methods(http.MethodPost).Subrouter()
+	postR.HandleFunc("/products", productHandler.Create)
+	postR.Use(productHandler.MiddlewareValidateProduct)
 
-	deleteRouter := sm.Methods(http.MethodDelete).Subrouter()
-	deleteRouter.HandleFunc("/products/{id:[0-9]+}", productHandler.DeleteProduct)
+	deleteR := sm.Methods(http.MethodDelete).Subrouter()
+	deleteR.HandleFunc("/products/{id:[0-9]+}", productHandler.Delete)
 
+	// redoc options (redoc - swagger ui alternative)
 	swaggerDocOptions := middleware.RedocOpts{SpecURL: "/swagger.yaml"}
 	swaggerHandler := middleware.Redoc(swaggerDocOptions, nil)
-	getRouter.Handle("/docs", swaggerHandler)
-	getRouter.Handle("/swagger.yaml", http.FileServer(http.Dir("./")))
+
+	// ui with redoc. we also need endpoint to serve the swagger.yaml file
+	getR.Handle("/docs", swaggerHandler)
+	getR.Handle("/swagger.yaml", http.FileServer(http.Dir("./")))
 
 	server := &http.Server{
 		Addr:         ":8080",

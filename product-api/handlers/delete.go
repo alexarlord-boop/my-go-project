@@ -15,7 +15,7 @@ import (
 //	501: errorResponse
 
 // DeleteProduct deletes a product from the data store
-func (p *Products) DeleteProduct(w http.ResponseWriter, r *http.Request) {
+func (p *Products) Delete(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
 	p.l.Println("Handle DELETE Product", id)

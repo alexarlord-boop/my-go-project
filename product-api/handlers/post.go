@@ -13,7 +13,7 @@ import (
 //   501: errorResponse
 
 // AddProduct adds a product to the data store
-func (p *Products) AddProduct(w http.ResponseWriter, r *http.Request) {
+func (p *Products) Create(w http.ResponseWriter, r *http.Request) {
 	p.l.Println("Handle POST Products")
 
 	product := r.Context().Value(KeyProduct{}).(*data.Product)

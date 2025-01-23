@@ -10,7 +10,7 @@ import (
 
 type KeyProduct struct{}
 
-func (p *Products) MiddlewareProductValidation(next http.Handler) http.Handler {
+func (p *Products) MiddlewareValidateProduct(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		product := &data.Product{}
 		err := json.NewDecoder(r.Body).Decode(product)
