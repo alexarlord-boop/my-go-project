@@ -84,6 +84,14 @@ paths:
                     $ref: '#/responses/errorResponse'
             tags:
                 - products
+        get:
+            description: Returns a single product by ID
+            operationId: listSingleProduct
+            responses:
+                "200":
+                    $ref: '#/responses/productResponse'
+            tags:
+                - products
         put:
             description: Updates an existing product
             operationId: updateProduct

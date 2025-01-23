@@ -26,6 +26,7 @@ func main() {
 	// create a new subrouter for each method with gorilla mux
 	getRouter := sm.Methods(http.MethodGet).Subrouter()
 	getRouter.HandleFunc("/products", productHandler.GetProducts)
+	getRouter.HandleFunc("/products/{id:[0-9]+}", productHandler.GetProduct)
 
 	putRouter := sm.Methods(http.MethodPut).Subrouter()
 	putRouter.HandleFunc("/products/{id:[0-9]+}", productHandler.UpdateProduct)

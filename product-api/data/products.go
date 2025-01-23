@@ -88,8 +88,23 @@ func (p *Product) FromJSON(r io.Reader) error {
 	return decoder.Decode(p)
 }
 
+func (p *Product) ToJSON(w io.Writer) error {
+	encoder := json.NewEncoder(w)
+	return encoder.Encode(p)
+}
+
 func GetProducts() Products {
 	return productList
+}
+
+// GetProductByID returns a single product by ID
+func GetProductByID(id int) (*Product, error) {
+	for _, p := range productList {
+		if p.ID == id {
+			return p, nil
+		}
+	}
+	return nil, ErrProductNotFound
 }
 
 func AddProduct(p *Product) {
