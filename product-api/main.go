@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/go-openapi/runtime/middleware"
+	gohandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
@@ -47,9 +48,14 @@ func main() {
 	getR.Handle("/docs", swaggerHandler)
 	getR.Handle("/swagger.yaml", http.FileServer(http.Dir("./")))
 
+	// CORS handler for allowing requests from localhost:3000
+	// "*" is wildcard for all origins, for example, we can use it for testing purposes, or for public APIs.
+	// if you require the client to pass authentication headers (e.g. cookies) you need to specify the origin -- the value can not be *.
+	corsHandler := gohandlers.CORS(gohandlers.AllowedOrigins([]string{"http://localhost:3000"}))
+
 	server := &http.Server{
 		Addr:         ":8080",
-		Handler:      sm,
+		Handler:      corsHandler(sm),
 		ErrorLog:     l,
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 10 * time.Second,
