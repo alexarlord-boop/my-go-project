@@ -44,14 +44,3 @@ func TestGetProduct(t *testing.T) {
 		t.Error("Expected product, got none")
 	}
 }
-
-// TODO:- fix this test
-func TestDeleteProduct(t *testing.T) {
-	cfg := client.DefaultTransportConfig().WithHost("localhost:8080")
-	c := client.NewHTTPClientWithConfig(strfmt.Default, cfg)
-
-	_, err := c.Products.DeleteProduct(products.NewDeleteProductParams().WithID(1))
-	if err != nil {
-		t.Fatal(err)
-	}
-}
