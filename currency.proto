@@ -1,0 +1,26 @@
+syntax = "proto3";
+package currency;
+
+option go_package = "protos/currency";
+
+// Service definition, this is what the client will call
+// This service will return the currency rate for a given currency
+service CurrencyService {
+  rpc GetCurrency (CurrencyRequest) returns (CurrencyResponse) {}
+}
+
+// Message definition, this is the data that will be sent to the service
+// This message will contain the currency that the client wants the rate for
+message CurrencyRequest {
+    string Base = 1;
+    string Destination = 2;
+}
+
+// Message definition, this is the data that will be sent back to the client
+// This message will contain the currency and the rate
+message CurrencyResponse {
+  float rate = 1;
+}
+
+
+
