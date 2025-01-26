@@ -8,7 +8,7 @@ This project is exploring how to build Microservices using the Go programming la
 ✴️ -- in progress, ❇️ -- completed
 * ❇️ Introduction to microservices
 * ✴️ RESTFul microservices with [Gorilla Web Toolkit](https://gorilla.github.io/), [Go Validator](https://pkg.go.dev/github.com/go-playground/validator/v10#section-readme), [Swagger](https://goswagger.io/go-swagger/)
-* gRPC microservices
+* ✴️ gRPC microservices. [ProtoBuffs basics](https://protobuf.dev/getting-started/gotutorial/),
 * Packaging applications with Docker
 * Testing microservice
 * Continuous Delivery
