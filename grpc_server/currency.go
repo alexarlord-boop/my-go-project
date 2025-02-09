@@ -4,15 +4,21 @@ package grpcserver
 
 import (
 	"context"
-	"log"
 	protos "my-go-project/protos/currency"
+
+	"github.com/hashicorp/go-hclog"
 )
 
 type CurrencyService struct {
-	log *log.Logger
+	log hclog.Logger
 	protos.UnimplementedCurrencyServiceServer
 }
 
-func (c *CurrencyService) Get(ctx context.Context, in *protos.CurrencyRequest) (*protos.CurrencyResponse, error) {
-	return &protos.CurrencyResponse{}, nil
+func NewCurrencyService(l hclog.Logger) *CurrencyService {
+	return &CurrencyService{l, protos.UnimplementedCurrencyServiceServer{}}
+}
+
+func (c *CurrencyService) GetRate(ctx context.Context, in *protos.RateRequest) (*protos.RateResponse, error) {
+	c.log.Info("Handle Get", "base", in.GetBase(), "destination", in.GetDestination())
+	return &protos.RateResponse{Rate: 0.5}, nil
 }
