@@ -28,5 +28,7 @@ func main() {
 
 	reflection.Register(grpcServer)
 	fmt.Println("⚡ Reflection Enabled (Development Mode)")
+	fmt.Println("Starting Currency Service")
 	grpcServer.Serve(l)
+
 }
