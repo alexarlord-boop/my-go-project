@@ -16,12 +16,15 @@ import (
 	gohandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 func main() {
 
-	// create a grpc currency client by using code generated from protos/currency.proto
-	cc, err := grpc.Dial("localhost:9092", grpc.WithInsecure()) // create a new client connection to the grpc server (same host, port)
+	// 1. create a grpc currency client by using code generated from protos/currency.proto
+	// create a new client connection to the grpc server (same host, port)
+	cc, err := grpc.NewClient("localhost:9092", grpc.WithTransportCredentials(insecure.NewCredentials()))
+
 	if err != nil {
 		log.Print("Unable to connect to currency service", "error", err)
 		os.Exit(1)
@@ -31,7 +34,7 @@ func main() {
 	// create a new currency service client
 	currencyServiceClient := protos.NewCurrencyServiceClient(cc) // create a new currency service client
 
-	// start the gateway (http server)
+	// 2. define the gateway (http server)
 	l := log.New(os.Stdout, "product-api", log.LstdFlags)
 	sm := mux.NewRouter()
 	// create a new subrouter for http method with gorilla mux
@@ -72,7 +75,7 @@ func main() {
 		IdleTimeout:  120 * time.Second,
 	}
 
-	// start the server
+	// 3. start the server
 	go func() {
 		l.Println("Starting api gateway server on port 8080")
 
@@ -83,7 +86,7 @@ func main() {
 		}
 	}()
 
-	// graceful shutdown
+	// 4. graceful shutdown
 	channel := make(chan os.Signal, 1)
 	signal.Notify(channel, os.Interrupt, syscall.SIGTERM)
 	sig := <-channel
